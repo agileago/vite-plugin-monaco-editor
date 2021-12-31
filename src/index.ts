@@ -59,7 +59,6 @@ export default function monacoEditorPlugin(options: IMonacoEditorOpts = {}): Plu
   const globalAPI = options.globalAPI || false;
   const customWorkers = options.customWorkers || [];
 
-
   options = {
     languageWorkers,
     publicPath,
@@ -73,18 +72,18 @@ export default function monacoEditorPlugin(options: IMonacoEditorOpts = {}): Plu
     name: 'vite-plugin-moncao-editor',
     configResolved(getResolvedConfig) {
       resolvedConfig = getResolvedConfig;
+      console.log(resolvedConfig)
+
     },
     configureServer(server) {
-      if (isCDN(publicPath)) {
-        return;
-      }
-
-
       workerMiddleware(server.middlewares, resolvedConfig, options);
     },
     transformIndexHtml(html) {
       const works = getWorks(options);
       const workerPaths = getWorkPath(works, options);
+      Object.keys(workerPaths).forEach(k => {
+        workerPaths[k] = path.resolve(resolvedConfig.base, workerPaths[k].slice(1))
+      })
 
       const globals = {
         MonacoEnvironment: `(function (paths) {
@@ -120,10 +119,6 @@ export default function monacoEditorPlugin(options: IMonacoEditorOpts = {}): Plu
     },
 
     writeBundle() {
-      if (isCDN(publicPath)) {
-        return;
-      }
-
       const works = getWorks(options);
 
       const distPath = path.resolve(resolvedConfig.root, resolvedConfig.build.outDir, options.publicPath);
@@ -157,12 +152,4 @@ export default function monacoEditorPlugin(options: IMonacoEditorOpts = {}): Plu
       }
     },
   };
-}
-
-export function isCDN(publicPath: string) {
-  if (/^((http:)|(https:)|(file:)|(\/\/))/.test(publicPath)) {
-    return true;
-  }
-
-  return false;
 }

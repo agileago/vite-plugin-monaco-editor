@@ -13,7 +13,7 @@ export default defineConfig({
     plugins: [
         vue(),
         monacoEditorPlugin({
-            publicPath: 'a/monacoeditorwork',
+            // publicPath: 'a/monacoeditorwork',
             customWorkers: [
                 {
                     label: "graphql",

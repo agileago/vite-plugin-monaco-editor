@@ -1,6 +1,6 @@
 import { Connect, ResolvedConfig } from 'vite';
-import { getWorks, IMonacoEditorOpts, isCDN, resolveMonacoPath } from './index';
-import { IWorkerDefinition, languageWorksByLabel } from './lnaguageWork';
+import { getWorks, IMonacoEditorOpts, resolveMonacoPath } from './index';
+import { IWorkerDefinition } from './lnaguageWork';
 const esbuild = require('esbuild');
 import * as fs from 'fs';
 import path = require('path');
@@ -16,11 +16,7 @@ export function getWorkPath(works: IWorkerDefinition[], options: IMonacoEditorOp
   const workerPaths = {};
 
   for (const work of works) {
-    if (isCDN(options.publicPath)) {
-      workerPaths[work.label] = options.publicPath + '/' + getFilenameByEntry(work.entry);
-    } else {
       workerPaths[work.label] = '/' + options.publicPath + '/' + getFilenameByEntry(work.entry);
-    }
   }
 
   if (workerPaths['typescript']) {
