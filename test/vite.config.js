@@ -6,14 +6,13 @@ import path from "path";
 console.log(path.resolve(__dirname, "src/worker/share.worker"))
 export default defineConfig({
     root: 'test',
-    // base: 'sub',
+    base: 'https://cdn.com/sub/',
     build: {
         minify: false,
     },
     plugins: [
         vue(),
         monacoEditorPlugin({
-            // publicPath: 'a/monacoeditorwork',
             customWorkers: [
                 {
                     label: "graphql",

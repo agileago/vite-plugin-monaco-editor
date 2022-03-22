@@ -50,7 +50,6 @@ export function workerMiddleware(
   }
 
   for (const work of works) {
-    console.log(config.base + options.publicPath + '/' + getFilenameByEntry(work.entry))
     middlewares.use(
       config.base + options.publicPath + '/' + getFilenameByEntry(work.entry),
       function (req, res, next) {
